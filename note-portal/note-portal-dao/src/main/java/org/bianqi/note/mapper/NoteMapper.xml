@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bianqi.note.mapper.NoteMapper" >
+  <resultMap id="BaseResultMap" type="org.bianqi.note.pojo.Note" >
+    <id column="n_id" property="nId" jdbcType="BIGINT" />
+    <result column="n_name" property="nName" jdbcType="VARCHAR" />
+    <result column="n_created" property="nCreated" jdbcType="TIMESTAMP" />
+    <result column="n_status" property="nStatus" jdbcType="INTEGER" />
+    <result column="n_content" property="nContent" jdbcType="VARCHAR" />
+    <result column="notebook_id" property="notebookId" jdbcType="BIGINT" />
+    <result column="n_title" property="nTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    n_id, n_name, n_created, n_status, n_content, notebook_id, n_title
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="org.bianqi.note.pojo.NoteExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from note
+    where n_id = #{nId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from note
+    where n_id = #{nId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.bianqi.note.pojo.NoteExample" >
+    delete from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.bianqi.note.pojo.Note" >
+    insert into note (n_id, n_name, n_created, 
+      n_status, n_content, notebook_id, 
+      n_title)
+    values (#{nId,jdbcType=BIGINT}, #{nName,jdbcType=VARCHAR}, #{nCreated,jdbcType=TIMESTAMP}, 
+      #{nStatus,jdbcType=INTEGER}, #{nContent,jdbcType=VARCHAR}, #{notebookId,jdbcType=BIGINT}, 
+      #{nTitle,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.bianqi.note.pojo.Note" >
+    insert into note
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nId != null" >
+        n_id,
+      </if>
+      <if test="nName != null" >
+        n_name,
+      </if>
+      <if test="nCreated != null" >
+        n_created,
+      </if>
+      <if test="nStatus != null" >
+        n_status,
+      </if>
+      <if test="nContent != null" >
+        n_content,
+      </if>
+      <if test="notebookId != null" >
+        notebook_id,
+      </if>
+      <if test="nTitle != null" >
+        n_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nId != null" >
+        #{nId,jdbcType=BIGINT},
+      </if>
+      <if test="nName != null" >
+        #{nName,jdbcType=VARCHAR},
+      </if>
+      <if test="nCreated != null" >
+        #{nCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nStatus != null" >
+        #{nStatus,jdbcType=INTEGER},
+      </if>
+      <if test="nContent != null" >
+        #{nContent,jdbcType=VARCHAR},
+      </if>
+      <if test="notebookId != null" >
+        #{notebookId,jdbcType=BIGINT},
+      </if>
+      <if test="nTitle != null" >
+        #{nTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.bianqi.note.pojo.NoteExample" resultType="java.lang.Integer" >
+    select count(*) from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update note
+    <set >
+      <if test="record.nId != null" >
+        n_id = #{record.nId,jdbcType=BIGINT},
+      </if>
+      <if test="record.nName != null" >
+        n_name = #{record.nName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nCreated != null" >
+        n_created = #{record.nCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nStatus != null" >
+        n_status = #{record.nStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.nContent != null" >
+        n_content = #{record.nContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notebookId != null" >
+        notebook_id = #{record.notebookId,jdbcType=BIGINT},
+      </if>
+      <if test="record.nTitle != null" >
+        n_title = #{record.nTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update note
+    set n_id = #{record.nId,jdbcType=BIGINT},
+      n_name = #{record.nName,jdbcType=VARCHAR},
+      n_created = #{record.nCreated,jdbcType=TIMESTAMP},
+      n_status = #{record.nStatus,jdbcType=INTEGER},
+      n_content = #{record.nContent,jdbcType=VARCHAR},
+      notebook_id = #{record.notebookId,jdbcType=BIGINT},
+      n_title = #{record.nTitle,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.bianqi.note.pojo.Note" >
+    update note
+    <set >
+      <if test="nName != null" >
+        n_name = #{nName,jdbcType=VARCHAR},
+      </if>
+      <if test="nCreated != null" >
+        n_created = #{nCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nStatus != null" >
+        n_status = #{nStatus,jdbcType=INTEGER},
+      </if>
+      <if test="nContent != null" >
+        n_content = #{nContent,jdbcType=VARCHAR},
+      </if>
+      <if test="notebookId != null" >
+        notebook_id = #{notebookId,jdbcType=BIGINT},
+      </if>
+      <if test="nTitle != null" >
+        n_title = #{nTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where n_id = #{nId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.bianqi.note.pojo.Note" >
+    update note
+    set n_name = #{nName,jdbcType=VARCHAR},
+      n_created = #{nCreated,jdbcType=TIMESTAMP},
+      n_status = #{nStatus,jdbcType=INTEGER},
+      n_content = #{nContent,jdbcType=VARCHAR},
+      notebook_id = #{notebookId,jdbcType=BIGINT},
+      n_title = #{nTitle,jdbcType=VARCHAR}
+    where n_id = #{nId,jdbcType=BIGINT}
+  </update>
+</mapper>

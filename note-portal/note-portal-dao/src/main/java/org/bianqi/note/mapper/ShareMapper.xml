@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bianqi.note.mapper.ShareMapper" >
+  <resultMap id="BaseResultMap" type="org.bianqi.note.pojo.Share" >
+    <id column="share_id" property="shareId" jdbcType="INTEGER" />
+    <result column="share_note" property="shareNote" jdbcType="VARCHAR" />
+    <result column="share_user" property="shareUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="org.bianqi.note.pojo.Share" extends="BaseResultMap" >
+    <result column="share_content" property="shareContent" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    share_id, share_note, share_user
+  </sql>
+  <sql id="Blob_Column_List" >
+    share_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="org.bianqi.note.pojo.ShareExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from share
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="org.bianqi.note.pojo.ShareExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from share
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from share
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from share
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.bianqi.note.pojo.ShareExample" >
+    delete from share
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.bianqi.note.pojo.Share" >
+    insert into share (share_id, share_note, share_user, 
+      share_content)
+    values (#{shareId,jdbcType=INTEGER}, #{shareNote,jdbcType=VARCHAR}, #{shareUser,jdbcType=VARCHAR}, 
+      #{shareContent,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="org.bianqi.note.pojo.Share" >
+    insert into share
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shareId != null" >
+        share_id,
+      </if>
+      <if test="shareNote != null" >
+        share_note,
+      </if>
+      <if test="shareUser != null" >
+        share_user,
+      </if>
+      <if test="shareContent != null" >
+        share_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shareId != null" >
+        #{shareId,jdbcType=INTEGER},
+      </if>
+      <if test="shareNote != null" >
+        #{shareNote,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUser != null" >
+        #{shareUser,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null" >
+        #{shareContent,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.bianqi.note.pojo.ShareExample" resultType="java.lang.Integer" >
+    select count(*) from share
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update share
+    <set >
+      <if test="record.shareId != null" >
+        share_id = #{record.shareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shareNote != null" >
+        share_note = #{record.shareNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareUser != null" >
+        share_user = #{record.shareUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareContent != null" >
+        share_content = #{record.shareContent,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update share
+    set share_id = #{record.shareId,jdbcType=INTEGER},
+      share_note = #{record.shareNote,jdbcType=VARCHAR},
+      share_user = #{record.shareUser,jdbcType=VARCHAR},
+      share_content = #{record.shareContent,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update share
+    set share_id = #{record.shareId,jdbcType=INTEGER},
+      share_note = #{record.shareNote,jdbcType=VARCHAR},
+      share_user = #{record.shareUser,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.bianqi.note.pojo.Share" >
+    update share
+    <set >
+      <if test="shareNote != null" >
+        share_note = #{shareNote,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUser != null" >
+        share_user = #{shareUser,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null" >
+        share_content = #{shareContent,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.bianqi.note.pojo.Share" >
+    update share
+    set share_note = #{shareNote,jdbcType=VARCHAR},
+      share_user = #{shareUser,jdbcType=VARCHAR},
+      share_content = #{shareContent,jdbcType=LONGVARBINARY}
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.bianqi.note.pojo.Share" >
+    update share
+    set share_note = #{shareNote,jdbcType=VARCHAR},
+      share_user = #{shareUser,jdbcType=VARCHAR}
+    where share_id = #{shareId,jdbcType=INTEGER}
+  </update>
+</mapper>
